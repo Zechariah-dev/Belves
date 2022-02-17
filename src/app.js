@@ -3,6 +3,7 @@ const cors = require('cors');
 const compression = require('compression');
 const logger = require('morgan');
 const pino = require('./utils/pino');
+const Database = require('./database');
 
 
 // express app 
@@ -17,6 +18,9 @@ app.use(express.urlencoded({  extended:  false }))
 
 // global variables
 global.logger = pino;
+
+// momgodb connection
+Database.connect();
 
 // main page
 app.use('/', (req, res) => {

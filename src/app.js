@@ -4,6 +4,8 @@ const compression = require('compression');
 const logger = require('morgan');
 const pino = require('./utils/pino');
 const Database = require('./database');
+const routes = require('./routes');
+const docs = require('./docs');
 
 
 // express app 
@@ -21,6 +23,12 @@ global.logger = pino;
 
 // momgodb connection
 Database.connect();
+
+// swagger docs
+docs(app);
+
+// routes
+routes(app);
 
 // main page
 app.use('/', (req, res) => {

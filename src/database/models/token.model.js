@@ -15,7 +15,7 @@ const TokenSchema = new Schema({
         type: Date
     },
     hash: {
-        type: string
+        type: String
     }
 }, {
     timestamps: true

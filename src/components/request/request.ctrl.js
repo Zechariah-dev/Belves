@@ -1,6 +1,8 @@
 const RequestRepository = require('../../database/repositories/request.repo');
 const RequestService = require('./request.serv');
 const BookRepository = require('../../database/repositories/book.repo');
+const NotificationRepository = require('../../database/repositories/notification.repo');
+const NotifcationService = require('../notification/notification.serv');
 const {  updateRequestValidation } = require('./request.validation');
 
 const RequestController = {
@@ -24,6 +26,12 @@ const RequestController = {
             
             const request = await RequestService.createRequest(payload);
 
+            const notification = await NotifcationService.createNotification({
+                user: request.owner,
+                request: request._id,
+                message: `You have a new book request from ${user.firstname} ${user.lastname} for ${book.title}. Kindly respond to this notification as soon a received`
+            })  
+
             return res.status(201).json({ request })
         } catch(err) {
             global.logger.error(err);
@@ -43,8 +51,10 @@ const RequestController = {
             if (!request) {
                 return res.status(404).json({ message: 'Request Not Found'})
             }
-
+    
             await request.remove()
+
+            await NotificationRepository.deleteOne({ user: request.owner})
 
             return res.sendStatus(204);
         } catch(err) {
@@ -90,7 +100,19 @@ const RequestController = {
             }
             
             request = await RequestRepository.updateOne({ _id: params.requestId}, { ...body });
+
+            await NotificationService.createNotificaion({
+                user: request.user._id,
+                message: `Your request for ${request.book.title} has been ${body.status}. You will be contact very soon to evaluate your method of delivery for the book`
+            })
             
+            if (body.status === 'Accepted') {
+                await NotificationService.createNotificaion({
+                    user: request.owner._id,
+                    message: `Here is ${request.user.firstname} ${request.user.lastname} details, \n Email: ${requst.user.email}, \n Contact: ${request.user.phone_number}. \n Kindly contact inorder to send the book `
+                })
+            }
+
             return res.sendStatus(204)
         } catch (err) {
             global.logge.error(err);

@@ -6,6 +6,8 @@ const pino = require('./utils/pino');
 const Database = require('./database');
 const routes = require('./routes');
 const docs = require('./docs');
+const emitter = require('./utils/emitter');
+
 
 
 // express app 
@@ -29,6 +31,20 @@ docs(app);
 
 // routes
 routes(app);
+
+emitter.on('error', global.logger.error)
+
+// emitter.on('error', global.logger.error);
+
+// TODO
+emitter.on('handle_notification_delete', async (request) => {
+
+})
+
+// TODO
+emitter.on('handle_notification_delete_all', async(notifications) => {
+
+})
 
 // main page
 app.use('/', (req, res) => {

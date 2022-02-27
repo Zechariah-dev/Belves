@@ -1,6 +1,7 @@
 const { Router } = require('express');
 const BookController = require('../components/book/book.ctrl');
 const { auth } = require('../middlewares/auth');
+const upload = require('../utils/multer');
 
 const router = Router();
 
@@ -38,7 +39,7 @@ const router = Router();
  *       500:
  *          description: Server Error
  */
-router.post('/', auth, BookController.create);
+router.post('/', [auth, upload.array('images')], BookController.create);
 
 /**
  * @swagger

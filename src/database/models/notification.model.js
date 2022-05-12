@@ -3,23 +3,22 @@ const { Schema, model } = require('mongoose');
 const NotificationSchema = new Schema({
     user: {
         type: Schema.Types.ObjectId,
-        ref: 'user'
+        ref: 'user',
     },
-    message: {
-        type: String
-    },
+    title: String,
+    message: String,
     request: {
         type: Schema.Types.ObjectId,
         ref: 'request',
-        autopopulate: true
+        autopopulate: true,
     },
     read: {
         type: Boolean,
-        default: false
-    }
+        default: false,
+    },
 }, {
-    timestamps: true
-})
+    timestamps: true,
+}, );
 
 NotificationSchema.plugin(require('mongoose-autopopulate'));
 

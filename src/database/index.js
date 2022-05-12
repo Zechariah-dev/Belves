@@ -1,21 +1,22 @@
-const mongoose = require('mongoose');
 require('dotenv').config();
+const mongoose = require('mongoose');
+const Logger = require('../utils/pino');
 
 const Database = {
-  async connect() {
-    try {
-      await mongoose.connect(process.env.MONGO_URI, {
-        useNewUrlParser: true,
-        useUnifiedTopology: true,
-      });
+    async connect() {
+        try {
+            await mongoose.connect(process.env.MONGO_URI, {
+                useNewUrlParser: true,
+                useUnifiedTopology: true,
+            });
 
-      global.logger.info('Belves -> Database Connected');
-    } catch (error) {
-      global.logger.error('Belves -> Error connecting to DB');
-      global.logger.error(error.message);
-      throw error;
-    }
-  },
+            Logger.info('Belves -> Database Connected');
+        } catch (error) {
+            Logger.error('Belves -> Error connecting to DB');
+            Logger.error(error.message);
+            throw error;
+        }
+    },
 };
 
 module.exports = Object.freeze(Database);

@@ -24,10 +24,10 @@ router.get('/', auth, NotificationController.getUserNotifications);
  * @swagger
  * /api/notification/{notificationId}:
  *   patch:
- *     summary: read notification
+ *     summary: read nonotification
  *     tags: ['Notification']
  *     parameters:
- *     - in: pat
+ *     - in: path
  *       name: notificationId
  *       required: true
  *       scheme:

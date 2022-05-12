@@ -1,18 +1,19 @@
+require('dotenv').config()
 const http = require('http');
 const App = require('./src/app');
-require('dotenv').config();
+const Logger = require('./src/utils/pino');
+
+const port = process.env.PORT || 1111;
 
 const Server = {
     async start() {
-      const server = http.createServer(App);
-      const port = process.env.PORT || 1111;
-      return server.listen(port);
+        const server = http.createServer(App);
+        return server.listen(port);
     },
-  };
-  
+};
+
 Server.start()
-    .then(() => global.logger.info('Server is Running'))
-    .catch((err) => global.logger.error(err));
-  
+    .then(() => Logger.info(`Server is up and Running on port ${port}`))
+    .catch((err) => Logger.error(err));
+
 module.exports = Server;
-  
